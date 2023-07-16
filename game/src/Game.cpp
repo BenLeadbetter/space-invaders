@@ -1,31 +1,56 @@
 #include "Game.h"
 
+#include <ranges>
+
+#include "GameState.h"
 #include "Object.h"
 
 namespace space_invaders::game {
 
 namespace {
 
-auto makeRoot() { return std::make_unique<Object>(); }
+void makeRoot(std::optional<std::reference_wrapper<Object>>& rootState,
+              std::vector<std::unique_ptr<Object>>& objects) {
+  auto root = std::make_unique<Object>();
+  rootState = *root;
+  objects.push_back(std::move(root));
+}
 
-auto makePlayer() { return std::make_unique<Object>(); }
+void makePlayer(std::optional<std::reference_wrapper<Object>>& playerState,
+                std::vector<std::unique_ptr<Object>>& objects,
+                const Vec& gameDims) {
+  auto player = std::make_unique<Object>();
+  const auto dims = Vec(50, 25);
+  player->rect = {
+      .offset = Vec((gameDims.x() - dims.x()) / 2.0, dims.y()),
+      .span = dims,
+  };
+  playerState = *player;
+  objects.push_back(std::move(player));
+}
 
 }  // namespace
 
 Game::Game() {
-  {
-    auto root = makeRoot();
-    m_root = *root;
-    m_objects.push_back(std::move(root));
-  }
-
-  {
-    auto player = makePlayer();
-    m_player = *player;
-    m_objects.push_back(std::move(player));
-  }
+  m_state = std::make_unique<GameState>();
+  m_state->dimensions = Vec(300, 400);
+  makeRoot(m_state->root, m_state->objects);
+  makePlayer(m_state->player, m_state->objects, m_state->dimensions);
 }
 
-void Game::tick(std::vector<Input>) {}
+Game::Game(std::unique_ptr<GameState> state) : m_state(std::move(state)) {}
+
+Game::~Game() = default;
+
+void Game::tick(std::vector<Input> input) {
+  if (std::ranges::find(input, Input::Left) != input.cend()) {
+    auto& offset = m_state->player->get().rect.offset;
+    offset += Vec(-m_state->playerSpeed, 0.0);
+  }
+  if (std::ranges::find(input, Input::Right) != input.cend()) {
+    auto& offset = m_state->player->get().rect.offset;
+    offset += Vec(m_state->playerSpeed, 0.0);
+  }
+}
 
 }  // namespace space_invaders::game
