@@ -6,7 +6,7 @@ option(SPACE_INVADERS_TESTS "Build and register unit tests" ON)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-if (NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE BOOL "" FORCE)
 endif()
 
@@ -21,28 +21,31 @@ include(project_init)
 #
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
-                "${CMAKE_BINARY_DIR}/conan.cmake"
-                TLS_VERIFY ON)
+    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake" "${CMAKE_BINARY_DIR}/conan.cmake"
+         TLS_VERIFY ON)
 endif()
 
 include(conan)
 
 conan_cmake_configure(
-    REQUIRES 
-        catch2/2.13.10
-        eigen/3.4.0
-        ftxui/4.1.1
-    GENERATORS CMakeToolchain CMakeDeps
-)
+    REQUIRES
+    catch2/2.13.10
+    eigen/3.4.0
+    ftxui/4.1.1
+    GENERATORS
+    CMakeToolchain
+    CMakeDeps)
 conan_cmake_autodetect(CONAN_SETTINGS)
 conan_cmake_install(
-    PATH_OR_REFERENCE .
-    BUILD missing
-    REMOTE conancenter
-    SETTINGS ${CONAN_SETTINGS}
-)
+    PATH_OR_REFERENCE
+    .
+    BUILD
+    missing
+    REMOTE
+    conancenter
+    SETTINGS
+    ${CONAN_SETTINGS})
 
 include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 
@@ -51,7 +54,7 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 #
 
 add_subdirectory(app)
-if (SPACE_INVADERS_TESTS)
+if(SPACE_INVADERS_TESTS)
     enable_testing()
     add_subdirectory(test)
 endif()
