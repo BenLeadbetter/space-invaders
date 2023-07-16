@@ -1,13 +1,12 @@
 namespace space_invaders::game {
 
-class Object
-{
-public:
-    Object(Object* = nullptr);
-    ~Object();
+class Object {
+ public:
+  Object(Object* = nullptr);
+  ~Object();
 
-private:
-    Object* m_parent{nullptr};
+ private:
+  Object* m_parent{nullptr};
 };
 
-}
+}  // namespace space_invaders::game
