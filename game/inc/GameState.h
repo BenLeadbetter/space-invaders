@@ -17,7 +17,6 @@ struct GameState {
   double playerSpeed{5.0};
   std::optional<std::reference_wrapper<Object>> bullet;
   std::optional<std::reference_wrapper<Object>> player;
-  std::optional<std::reference_wrapper<Object>> root;
   std::vector<std::reference_wrapper<Object>> defences;
   std::vector<std::reference_wrapper<Object>> enemies;
   std::vector<std::unique_ptr<Object>> objects;

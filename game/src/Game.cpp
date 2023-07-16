@@ -9,13 +9,6 @@ namespace space_invaders::game {
 
 namespace {
 
-void makeRoot(std::optional<std::reference_wrapper<Object>>& rootState,
-              std::vector<std::unique_ptr<Object>>& objects) {
-  auto root = std::make_unique<Object>();
-  rootState = *root;
-  objects.push_back(std::move(root));
-}
-
 void makePlayer(std::optional<std::reference_wrapper<Object>>& playerState,
                 std::vector<std::unique_ptr<Object>>& objects,
                 const Vec& gameDims) {
@@ -34,7 +27,6 @@ void makePlayer(std::optional<std::reference_wrapper<Object>>& playerState,
 Game::Game() {
   m_state = std::make_unique<GameState>();
   m_state->dimensions = Vec(300, 400);
-  makeRoot(m_state->root, m_state->objects);
   makePlayer(m_state->player, m_state->objects, m_state->dimensions);
 }
 
