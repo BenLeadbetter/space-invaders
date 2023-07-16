@@ -60,6 +60,29 @@ SCENARIO("player behaviour", "[game][player]") {
       }
     }
   }
+  GIVEN("a game with the player positioned at the far right of the board") {
+    Game game = []() {
+      auto state = std::make_unique<GameState>();
+      state->dimensions = Vec(100, 100);
+      auto player = std::make_unique<Object>();
+      player->rect = {
+          .offset = Vec(50.0, 0.0),
+          .span = Vec(50.0, 25.0),
+      };
+      state->player = *player;
+      state->objects.push_back(std::move(player));
+      return Game(std::move(state));
+    }();
+    const auto& player = game.state().player;
+    WHEN("move right on tick") {
+      REQUIRE(player);
+      const auto xBefore = player->get().rect.offset.x();
+      game.tick({Input::Right});
+      THEN("player position is unchanged") {
+        CHECK(player->get().rect.offset.x() - xBefore == Approx(0.0));
+      }
+    }
+  }
 }
 
 }  // namespace space_invaders::game::test

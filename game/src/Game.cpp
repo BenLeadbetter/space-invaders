@@ -36,12 +36,18 @@ Game::~Game() = default;
 
 void Game::tick(std::vector<Input> input) {
   if (std::ranges::find(input, Input::Left) != input.cend()) {
-    auto& offset = m_state->player->get().rect.offset;
-    offset += Vec(-m_state->playerSpeed, 0.0);
+    auto& rect = m_state->player->get().rect;
+    rect.offset += Vec(-m_state->playerSpeed, 0.0);
+    if (rect.offset.x() < 0) {
+      rect.offset.x() = 0;
+    }
   }
   if (std::ranges::find(input, Input::Right) != input.cend()) {
-    auto& offset = m_state->player->get().rect.offset;
-    offset += Vec(m_state->playerSpeed, 0.0);
+    auto& rect = m_state->player->get().rect;
+    rect.offset += Vec(m_state->playerSpeed, 0.0);
+    if (rect.offset.x() + rect.span.x() > m_state->dimensions.x()) {
+      rect.offset.x() = m_state->dimensions.x() - rect.span.x();
+    }
   }
 }
 
