@@ -15,8 +15,6 @@ repos:
   rev: v3.2.0
   hooks:
   - id: trailing-whitespace
-    exclude_types: [c++, c]
-    exclude: (CMakeLists\.txt)|(.*\.cmake)
   - id: end-of-file-fixer
   - id: check-yaml
   - id: check-added-large-files
