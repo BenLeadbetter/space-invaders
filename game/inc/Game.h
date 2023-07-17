@@ -14,7 +14,7 @@ class Game {
   Game(std::unique_ptr<GameState>);
   ~Game();
 
-  void tick(std::vector<Input>);
+  void tick(std::vector<Input> = {});
   const GameState& state() const { return *m_state; }
 
  private:
