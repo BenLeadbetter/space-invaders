@@ -1,9 +1,9 @@
-#include "Game.h"
+#include <game/Game.h>
+#include <game/GameState.h>
+#include <game/Helpers.h>
+#include <game/Object.h>
 
 #include <catch2/catch.hpp>
-
-#include "GameState.h"
-#include "Object.h"
 
 namespace space_invaders::game::test {
 
@@ -14,26 +14,25 @@ SCENARIO("player behaviour", "[game][player]") {
     THEN("there is a player") { CHECK(player); }
     THEN("the player is centred in the board") {
       REQUIRE(player);
-      const auto rect = player->rect;
+      const auto rect = player->rect();
       CHECK(rect.offset.x() + rect.span.x() / 2.0 ==
             Approx(game.state().dimensions.x() / 2.0));
     }
     WHEN("move left on tick") {
       REQUIRE(player);
-      const auto xBefore = player->rect.offset.x();
+      const auto xBefore = player->offset.x();
       game.tick({Input::Left});
       THEN("player is moved playerSpeed units left") {
-        CHECK(player->rect.offset.x() - xBefore ==
+        CHECK(player->offset.x() - xBefore ==
               Approx(-game.state().playerSpeed));
       }
     }
     WHEN("move right on tick") {
       REQUIRE(player);
-      const auto xBefore = player->rect.offset.x();
+      const auto xBefore = player->offset.x();
       game.tick({Input::Right});
       THEN("player is moved playerSpeed units right") {
-        CHECK(player->rect.offset.x() - xBefore ==
-              Approx(game.state().playerSpeed));
+        CHECK(player->offset.x() - xBefore == Approx(game.state().playerSpeed));
       }
     }
   }
@@ -41,21 +40,19 @@ SCENARIO("player behaviour", "[game][player]") {
     Game game = []() {
       auto state = std::make_unique<GameState>();
       state->dimensions = Vec(100, 100);
-      auto player = std::make_unique<Object>();
-      player->rect = {
+      state->player = Object{
+          .raster = {},
           .offset = Vec(0.0, 0.0),
-          .span = Vec(50.0, 25.0),
       };
-      state->player = *player;
       return Game(std::move(state));
     }();
     const auto& player = game.state().player;
     WHEN("move left on tick") {
       REQUIRE(player);
-      const auto xBefore = player->rect.offset.x();
+      const auto xBefore = player->offset.x();
       game.tick({Input::Left});
       THEN("player position is unchanged") {
-        CHECK(player->rect.offset.x() - xBefore == Approx(0.0));
+        CHECK(player->offset.x() - xBefore == Approx(0.0));
       }
     }
   }
@@ -63,21 +60,18 @@ SCENARIO("player behaviour", "[game][player]") {
     Game game = []() {
       auto state = std::make_unique<GameState>();
       state->dimensions = Vec(100, 100);
-      auto player = std::make_unique<Object>();
-      player->rect = {
-          .offset = Vec(50.0, 0.0),
-          .span = Vec(50.0, 25.0),
-      };
-      state->player = *player;
+      state->player = makePlayer();
+      state->player->offset.x() =
+          state->dimensions.x() - state->player->span().x();
       return Game(std::move(state));
     }();
     const auto& player = game.state().player;
     WHEN("move right on tick") {
       REQUIRE(player);
-      const auto xBefore = player->rect.offset.x();
+      const auto xBefore = player->offset.x();
       game.tick({Input::Right});
       THEN("player position is unchanged") {
-        CHECK(player->rect.offset.x() - xBefore == Approx(0.0));
+        CHECK(player->offset.x() - xBefore == Approx(0.0));
       }
     }
   }
@@ -92,21 +86,16 @@ SCENARIO("bullet behaviour", "[game][bullet]") {
     Game game = []() {
       auto state = std::make_unique<GameState>();
       state->dimensions = Vec(100, 100);
-      auto bullet = std::make_unique<Object>();
-      bullet->rect = {
-          .offset = Vec(50.0, 50.0),
-          .span = Vec(1.0, 1.0),
-      };
+      state->bullet = makeBullet();
       state->bulletSpeed = 30.0;
-      state->bullet = *bullet;
       return Game(std::move(state));
     }();
     WHEN("game tick") {
       REQUIRE(game.state().bullet);
-      auto yBefore = game.state().bullet->rect.offset.y();
+      auto yBefore = game.state().bullet->offset.y();
       game.tick();
       THEN("bullet has moved upwards by bulletSpeed units") {
-        CHECK(yBefore - game.state().bullet->rect.offset.y() ==
+        CHECK(yBefore - game.state().bullet->offset.y() ==
               game.state().bulletSpeed);
       }
     }

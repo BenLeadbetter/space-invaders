@@ -1,4 +1,4 @@
-#include "Rect.h"
+#include <game/Rect.h>
 
 #include <catch2/catch.hpp>
 

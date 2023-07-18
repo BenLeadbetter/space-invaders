@@ -1,4 +1,4 @@
-#include "Rect.h"
+#include <game/Rect.h>
 
 namespace space_invaders::game {
 
