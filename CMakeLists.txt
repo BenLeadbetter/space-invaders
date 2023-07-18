@@ -59,9 +59,9 @@ include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
 # subdirs
 #
 
-add_subdirectory(app)
 if(SPACE_INVADERS_TESTS)
     enable_testing()
     add_subdirectory(test)
 endif()
 add_subdirectory(game)
+add_subdirectory(app)
