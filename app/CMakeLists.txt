@@ -1,4 +1,6 @@
 add_executable(space-invaders main.cpp)
+target_link_libraries(space-invaders PRIVATE space-invaders-game
+                                             space-invaders-gui)
 
 set_target_properties(
     space-invaders
