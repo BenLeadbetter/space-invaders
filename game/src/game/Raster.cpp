@@ -17,7 +17,7 @@ Raster Raster::from(std::string_view str) {
     }
   };
   std::vector<raster::Row> rows;
-  for (const auto row : std::views::split(str, "\n")) {
+  for (const auto row : std::views::split(str, '\n')) {
     const auto range = row | std::views::transform(toPix);
     rows.emplace_back(range.begin(), range.end());
     if (rows.size() > 1 && rows.back().size() != rows.front().size()) {

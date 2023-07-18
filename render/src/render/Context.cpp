@@ -6,6 +6,7 @@
 #include <ftxui/dom/canvas.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
+#include <iostream>
 #include <ranges>
 
 namespace space_invaders::render {
@@ -13,32 +14,31 @@ namespace space_invaders::render {
 namespace {
 
 void renderObj(const game::Object &obj, ftxui::Canvas &canvas) {
-  using Size = game::Raster::size_type;
-  Size i = 0;
-  Size j = 0;
-  for (const auto &row : obj.raster) {
-    for (const auto &pix : row) {
-      if (pix) {
-        canvas.DrawPoint(i + static_cast<int>(obj.offset.x()),
-                         j + static_cast<int>(obj.offset.y()),
-                         ftxui::Color::White);
+  int i = 0;
+  for (auto i = 0; i != obj.raster.rows(); ++i) {
+    for (auto j = 0; j != obj.raster.cols(); ++j) {
+      if (obj.raster[i][j]) {
+        const auto x = j + static_cast<int>(obj.offset.x());
+        const auto y = i + static_cast<int>(obj.offset.y());
+        canvas.DrawPoint(x, y, ftxui::Color::White);
       }
-      ++j;
     }
-    ++i;
   }
 }
+
+constexpr int borders() { return 2; }
 
 }  // namespace
 
 Context::Context(const game::Vec &dims)
     : m_screen(std::make_unique<ftxui::Screen>(
-          static_cast<int>(dims.x() / 2.0), static_cast<int>(dims.y() / 4.0))) {
-}
+          static_cast<int>(dims.x() / 2.0) + borders(),
+          static_cast<int>(dims.y() / 4.0) + borders())) {}
+
 Context::~Context() = default;
 
 std::string Context::render(const game::Game &game) {
-  ftxui::Canvas canvas(m_screen->dimx(), m_screen->dimy());
+  ftxui::Canvas canvas((m_screen->dimx() + 1) * 2, (m_screen->dimy() + 1) * 4);
 
   const auto &state = game.state();
   renderObj(*state.player, canvas);

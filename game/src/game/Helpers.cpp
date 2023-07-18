@@ -11,7 +11,7 @@ Object makePlayer() {
       "0000011111100000\n"
       "0000111011100000\n"
       "0011000110001100\n"
-      "0000001100000000\n";
+      "0000001100000000";
   return {
       .raster = Raster::from(data),
       .offset = {},
@@ -19,7 +19,7 @@ Object makePlayer() {
 }
 
 Object makeBullet() {
-  static const std::string data = "1\n1\n";
+  static const std::string data = "1\n1";
   return {
       .raster = Raster::from(data),
       .offset = {},
