@@ -11,7 +11,7 @@ namespace {
 
 void initPlayer(Object& player, Vec& gameDims) {
   player.offset.x() = (gameDims.x() - player.span().x()) / 2.0;
-  player.offset.y() = player.span().y();
+  player.offset.y() = gameDims.y() - player.span().y();
 }
 
 bool inputContains(const std::vector<Input>& input, Input event) {

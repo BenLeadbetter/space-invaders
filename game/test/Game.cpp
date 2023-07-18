@@ -18,6 +18,12 @@ SCENARIO("player behaviour", "[game][player]") {
       CHECK(rect.offset.x() + rect.span.x() / 2.0 ==
             Approx(game.state().dimensions.x() / 2.0));
     }
+    THEN("the player is at the bottom of the board") {
+      REQUIRE(player);
+      const auto rect = player->rect();
+      CHECK(rect.offset.y() + rect.span.y() ==
+            Approx(game.state().dimensions.y()));
+    }
     WHEN("move left on tick") {
       REQUIRE(player);
       const auto xBefore = player->offset.x();
