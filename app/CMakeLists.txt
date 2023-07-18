@@ -1,7 +1,8 @@
+find_package(ncurses REQUIRED)
 add_executable(space-invaders main.cpp)
-target_link_libraries(space-invaders PRIVATE space-invaders-game
-                                             space-invaders-render)
-
+target_link_libraries(
+    space-invaders PRIVATE space-invaders-game space-invaders-render
+                           ncurses::ncurses)
 set_target_properties(
     space-invaders
     PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER minesweeper.com

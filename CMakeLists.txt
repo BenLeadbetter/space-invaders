@@ -39,6 +39,8 @@ conan_cmake_configure(
     catch2/2.13.10
     eigen/3.4.0
     ftxui/4.1.1
+    ncurses/6.4
+    sdl/2.26.5
     GENERATORS
     CMakeToolchain
     CMakeDeps)
