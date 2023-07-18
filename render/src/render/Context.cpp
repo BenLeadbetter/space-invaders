@@ -6,8 +6,6 @@
 #include <ftxui/dom/canvas.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
-#include <iostream>
-#include <ranges>
 
 namespace space_invaders::render {
 
