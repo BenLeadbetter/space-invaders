@@ -1,0 +1,6 @@
+find_package(ftxui REQUIRED)
+add_library(space-invaders-render src/render/Context.cpp)
+target_link_libraries(space-invaders-render PUBLIC space-invaders-game)
+target_link_libraries(space-invaders-render PRIVATE ftxui::ftxui)
+target_include_directories(space-invaders-render PUBLIC inc)
+target_include_directories(space-invaders-render PRIVATE src)

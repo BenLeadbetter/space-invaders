@@ -4,6 +4,7 @@
 #include <game/Metrics.h>
 
 #include <optional>
+#include <string_view>
 #include <vector>
 
 namespace space_invaders::game {
@@ -18,7 +19,9 @@ class Raster : public raster::Base {
  public:
   using raster::Base::Base;
 
-  static Raster make(std::size_t rows, std::size_t cols);
+  static Raster makeEmpty(std::size_t rows, std::size_t cols);
+  static Raster from(std::string_view);
+
   size_type cols() const;
   size_type rows() const;
   Vec span() const { return {cols(), rows()}; }

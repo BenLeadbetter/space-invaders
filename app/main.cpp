@@ -1,12 +1,13 @@
 #include <game/Game.h>
-#include <gui/Render.h>
+#include <game/GameState.h>
+#include <render/Context.h>
 
 #include <iostream>
 
 int main() {
   using namespace space_invaders;
   game::Game game;
-  const auto frame = gui::render(game);
-  std::cout << frame << std::endl;
+  render::Context renderer(game.state().dimensions);
+  std::cout << renderer.render(game) << std::endl;
   return 0;
 }

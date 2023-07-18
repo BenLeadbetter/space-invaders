@@ -1,8 +1,8 @@
 #pragma once
 
-#include <memory>
+#include <game/Input.h>
 
-#include "Input.h"
+#include <memory>
 
 namespace space_invaders::game {
 
