@@ -81,12 +81,19 @@ SCENARIO("bullet behaviour", "[game][bullet]") {
   GIVEN("a default initialised game") {
     Game game{};
     THEN("there is not bullet") { CHECK(!game.state().bullet); }
+    WHEN("fire on tick") {
+      game.tick({Input::Fire});
+      THEN("a bullet is spawned") { CHECK(game.state().bullet); }
+    }
   }
   GIVEN("a game with a bullet") {
     Game game = []() {
       auto state = std::make_unique<GameState>();
+      state->player = makePlayer();
+      state->player->offset.y() = 80;
       state->dimensions = Vec(100, 100);
       state->bullet = makeBullet();
+      state->bullet->offset.y() = 50.0;
       state->bulletSpeed = 30.0;
       return Game(std::move(state));
     }();
@@ -95,6 +102,7 @@ SCENARIO("bullet behaviour", "[game][bullet]") {
       auto yBefore = game.state().bullet->offset.y();
       game.tick();
       THEN("bullet has moved upwards by bulletSpeed units") {
+        REQUIRE(game.state().bullet);
         CHECK(yBefore - game.state().bullet->offset.y() ==
               game.state().bulletSpeed);
       }
@@ -104,6 +112,16 @@ SCENARIO("bullet behaviour", "[game][bullet]") {
       game.tick();
       game.tick();
       THEN("bullet is removed") { CHECK(!game.state().bullet); }
+    }
+    WHEN("fire on game tick") {
+      REQUIRE(game.state().bullet);
+      auto yBefore = game.state().bullet->offset.y();
+      game.tick({Input::Fire});
+      THEN("no new bullet is fired") {
+        REQUIRE(game.state().bullet);
+        CHECK(game.state().bullet->offset.y() ==
+              yBefore - game.state().bulletSpeed);
+      }
     }
   }
 }
