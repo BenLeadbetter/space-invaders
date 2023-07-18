@@ -29,6 +29,10 @@ struct FixedSizeVec : protected std::vector<T> {
   using std::vector<T>::back;
   using std::vector<T>::data;
 
+  using std::vector<T>::end;
+  using std::vector<T>::begin;
+  using std::vector<T>::rend;
+  using std::vector<T>::rbegin;
   using std::vector<T>::cend;
   using std::vector<T>::cbegin;
   using std::vector<T>::crend;

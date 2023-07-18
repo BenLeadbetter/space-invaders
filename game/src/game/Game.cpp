@@ -22,7 +22,7 @@ bool inputContains(const std::vector<Input>& input, Input event) {
 
 Game::Game() {
   m_state = std::make_unique<GameState>();
-  m_state->dimensions = Vec(300, 400);
+  m_state->dimensions = Vec(150, 200);
   m_state->player = makePlayer();
   initPlayer(*m_state->player, m_state->dimensions);
 }

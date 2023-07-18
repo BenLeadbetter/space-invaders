@@ -7,7 +7,7 @@
 
 namespace space_invaders::game {
 class Game;
-class Raster;
+class Object;
 }  // namespace space_invaders::game
 namespace ftxui {
 class Screen;
@@ -22,7 +22,7 @@ class Context {
   std::string render(const game::Game &);
 
  private:
-  void render(const game::Raster &);
+  void render(const game::Object &);
 
   std::unique_ptr<ftxui::Screen> m_screen;
 };
