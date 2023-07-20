@@ -40,7 +40,6 @@ conan_cmake_configure(
     eigen/3.4.0
     ftxui/4.1.1
     ncurses/6.4
-    sdl/2.26.5
     GENERATORS
     CMakeToolchain
     CMakeDeps)
