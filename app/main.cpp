@@ -25,6 +25,7 @@ int main() {
   keypad(stdscr, TRUE);
   nodelay(stdscr, TRUE);
   scrollok(stdscr, FALSE);
+  curs_set(0);
   noecho();
 
   const auto tick = []() {
